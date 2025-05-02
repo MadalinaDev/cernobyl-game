@@ -13,6 +13,7 @@ export class GameEngine {
   W: number;
   H: number;
   visitedRooms: Set<number> = new Set<number>();
+  paused = false;
 
   // Game state
   player = {
@@ -64,6 +65,10 @@ export class GameEngine {
       if (e.key === "Enter") {
         this.attemptCraft();
       }
+      if (e.key.toLowerCase() === "escape") {
+        this.paused = !this.paused;
+      }
+      
     }
   }
 
@@ -78,6 +83,7 @@ export class GameEngine {
 
     // Move player
     const prev = { x: this.player.x, y: this.player.y };
+    if (this.paused) return;
     if (this.keys.ArrowUp) this.player.y -= this.player.speed;
     if (this.keys.ArrowDown) this.player.y += this.player.speed;
     if (this.keys.ArrowLeft) this.player.x -= this.player.speed;

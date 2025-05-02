@@ -5,10 +5,13 @@ import { GameEngine } from "@/lib/game-engine";
 import CraftingUI from "./crafting-ui";
 import GameHUD from "./game-hud";
 import MiniMap from "./MiniMap";
+import PauseMenu from "./PauseMenu";
+
 
 export default function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [gameEngine, setGameEngine] = useState<GameEngine | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const [gameState, setGameState] = useState({
     player: {
       hp: 100,
@@ -45,6 +48,9 @@ export default function GameCanvas() {
       }
       engine.render();
 
+      // ✅ Sync pause state with React
+     setIsPaused(engine.paused);
+
       // Update React state with game state
       setGameState({
         player: { ...engine.player },
@@ -65,7 +71,7 @@ export default function GameCanvas() {
     // Set up keyboard listeners
     const handleKeyDown = (e: KeyboardEvent) => engine.handleKeyDown(e);
     const handleKeyUp = (e: KeyboardEvent) => engine.handleKeyUp(e);
-
+    
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
 
@@ -86,6 +92,20 @@ export default function GameCanvas() {
     if (gameEngine) {
       gameEngine.craftSelection = recipeIndex;
       gameEngine.attemptCraft();
+    }
+  };
+  const handleResume = () => {
+    if (gameEngine) gameEngine.paused = false;
+  };
+  
+  const handleSave = () => {
+    if (gameEngine) gameEngine.saveGame(true);
+  };
+  
+  const handleQuit = () => {
+    if (gameEngine) {
+      gameEngine.paused = false;
+      window.location.reload(); // Or route to main menu if you have one
     }
   };
 
@@ -132,6 +152,10 @@ export default function GameCanvas() {
           <h2 className="text-5xl font-bold text-red-600">GAME OVER</h2>
         </div>
       )}
+      {isPaused && (
+       <PauseMenu onResume={handleResume} onSave={handleSave} onQuit={handleQuit} />
+      )}
+
     </div>
   );
 }
