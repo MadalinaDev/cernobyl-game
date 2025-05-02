@@ -1,4 +1,4 @@
-UX/UI
+## UX/UI
  Pause menu (with Resume, Save, Quit)
 
  Inventory screen (e.g., I key to toggle inventory panel)
@@ -7,14 +7,14 @@ UX/UI
 
  Enemy health bar visibility only when nearby
 
-Visuals & Feedback
+## Visuals & Feedback
  Animated transitions between rooms (fade, slide, etc.)
 
  Particle effects for item pickup or damage
 
  Damage flash effect on player and enemies
 
-Audio
+## Audio
  Background music and sound effects (damage, pickup, crafting)
 
 Code/Architecture
@@ -24,12 +24,12 @@ Code/Architecture
 
  Modular enemy types with different behaviors (e.g., ranged, tank, fast)
 
-Save System
+## Save System
  Manual save slots or autosave indicator
 
  Versioned save handling to avoid breaking old saves
 
-Progression
+## Progression
  Mission system or objectives
 
  Unlockable rooms or abilities over time
