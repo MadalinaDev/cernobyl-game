@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { GameEngine } from "@/lib/game-engine";
 import CraftingUI from "./crafting-ui";
 import GameHUD from "./game-hud";
+import MiniMap from "./MiniMap";
 
 export default function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -90,6 +91,18 @@ export default function GameCanvas() {
 
   return (
     <div className="relative">
+      {/* MiniMap */}
+      {gameEngine && gameEngine.visitedRooms && (
+        <MiniMap
+          currentRoom={gameState.player.room}
+          visitedRooms={gameEngine.visitedRooms}
+          totalRooms={6}
+        />
+      )}
+
+
+      {/* Game Canvas */}
+       {/* className="relative"> */}
       <canvas
         ref={canvasRef}
         width={600}

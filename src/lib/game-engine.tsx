@@ -6,11 +6,13 @@ import {
   type Item,
 } from "./game-data";
 
+
 export class GameEngine {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   W: number;
   H: number;
+  visitedRooms: Set<number> = new Set<number>();
 
   // Game state
   player = {
@@ -41,6 +43,8 @@ export class GameEngine {
     this.ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     this.W = canvas.width;
     this.H = canvas.height;
+
+
   }
 
   // Input handling
@@ -346,8 +350,10 @@ export class GameEngine {
       this.player.room = index;
       this.player.x = dest.x;
       this.player.y = dest.y;
+      this.visitedRooms.add(index); // ← Track visited room
     }, 50);
   }
+  
 
   triggerGameOver() {
     this.player.hp = 0;
@@ -371,20 +377,29 @@ export class GameEngine {
       y: this.player.y,
       speed: this.player.speed,
       inventory: this.player.inventory,
+      visitedRooms: Array.from(this.visitedRooms), 
+
     };
 
     localStorage.setItem("chernobylSave_v4", JSON.stringify(data));
+  
+
   }
 
   loadGame() {
-    const raw = localStorage.getItem("chernobylSave_v4");
-    if (!raw) return;
+  const raw = localStorage.getItem("chernobylSave_v4");
+  if (!raw) return;
 
-    try {
-      const data = JSON.parse(raw);
-      Object.assign(this.player, data);
-    } catch (e) {
-      console.error("Failed to load saved game:", e);
+  try {
+    const data = JSON.parse(raw);
+    Object.assign(this.player, data);
+
+    if (data.visitedRooms) {
+      this.visitedRooms = new Set<number>(data.visitedRooms);
     }
+  } catch (e) {
+    console.error("Failed to load saved game:", e);
   }
+}
+
 }
