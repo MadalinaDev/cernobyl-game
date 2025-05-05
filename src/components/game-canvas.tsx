@@ -105,8 +105,8 @@ export default function GameCanvas() {
        {/* className="relative"> */}
       <canvas
         ref={canvasRef}
-        width={600}
-        height={400}
+        width={960}
+        height={640}
         className="border-2 border-gray-700 bg-black"
       />
 

@@ -123,11 +123,11 @@ export const rooms: Room[] = [
         lock: false,
       },
     ],
-    walls: [{ x: 230, y: 260, w: 140, h: 24, color: "#444" }],
-    hazards: [{ x: 120, y: 120, w: 80, h: 80, dmg: 0.05 }],
+    walls: [{ x: 230, y: 260, w: 180, h: 24, color: "#444" }],
+    hazards: [{ x: 120, y: 120, w: 90, h: 90, dmg: 0.05 }],
     items: [
-      { x: 300, y: 320, w: 20, h: 20, type: "medkit" },
-      { x: 450, y: 420, w: 16, h: 16, type: "scrap" },
+      { x: 300, y: 320, w: 30, h: 30, type: "medkit" },
+      { x: 450, y: 420, w: 56, h: 56, type: "scrap" },
     ],
     enemies: [
       {
@@ -181,8 +181,8 @@ export const rooms: Room[] = [
     walls: [{ x: 200, y: 180, w: 100, h: 20, color: "#555" }],
     hazards: [],
     items: [
-      { x: 260, y: 80, w: 18, h: 18, type: "key" },
-      { x: 320, y: 300, w: 16, h: 16, type: "chemicals" },
+      { x: 260, y: 80, w: 38, h: 38, type: "key" },
+      { x: 320, y: 300, w: 36, h: 36, type: "chemicals" },
     ],
     enemies: [
       {
@@ -218,8 +218,8 @@ export const rooms: Room[] = [
       {
         x: -10,
         y: 40,
-        w: 40,
-        h: 60,
+        w: 60,
+        h: 80,
         target: 1,
         dest: { x: 530, y: 40 },
         lock: false,
@@ -227,8 +227,8 @@ export const rooms: Room[] = [
       {
         x: 280,
         y: 350,
-        w: 40,
-        h: 50,
+        w: 60,
+        h: 70,
         target: 3,
         dest: { x: 280, y: 40 },
         lock: false,
@@ -236,8 +236,8 @@ export const rooms: Room[] = [
       {
         x: 550,
         y: 310,
-        w: 40,
-        h: 60,
+        w: 60,
+        h: 80,
         target: 5,
         dest: { x: 30, y: 300 },
         lock: "key",
@@ -245,12 +245,12 @@ export const rooms: Room[] = [
     ],
     walls: [{ x: 260, y: 0, w: 80, h: 140, color: "#333" }],
     hazards: [{ x: 150, y: 210, w: 160, h: 100, dmg: 0.08 }],
-    items: [{ x: 120, y: 60, w: 16, h: 16, type: "circuits" }],
+    items: [{ x: 120, y: 60, w: 36, h: 36, type: "circuits" }],
     enemies: [
       {
         x: 100,
         y: 260,
-        size: 32,
+        size: 56,
         speed: 2,
         damage: 14,
         color: "crimson",
@@ -317,7 +317,7 @@ export const rooms: Room[] = [
     walls: [{ x: 300, y: 200, w: 120, h: 20, color: "#666" }],
     hazards: [],
     items: [
-      { x: 282, y: 182, w: 36, h: 36, type: "bench" },
+      { x: 282, y: 152, w: 36, h: 36, type: "bench" },
       { x: 180, y: 300, w: 16, h: 16, type: "scrap" },
       { x: 500, y: 120, w: 16, h: 16, type: "chemicals" },
     ],
@@ -344,10 +344,10 @@ export const rooms: Room[] = [
     walls: [{ x: 240, y: 240, w: 200, h: 20, color: "#444" }],
     hazards: [],
     items: [
-      { x: 282, y: 182, w: 36, h: 36, type: "bench" },
-      { x: 140, y: 200, w: 16, h: 16, type: "circuits" },
-      { x: 520, y: 380, w: 16, h: 16, type: "scrap" },
-      { x: 300, y: 60, w: 16, h: 16, type: "chemicals" },
+      { x: 282, y: 182, w: 56, h: 56, type: "bench" },
+      { x: 140, y: 200, w: 36, h: 36, type: "circuits" },
+      { x: 520, y: 380, w: 36, h: 36, type: "scrap" },
+      { x: 300, y: 60, w: 36, h: 36, type: "chemicals" },
     ],
     enemies: [],
     spawn: { x: 60, y: 280 },
