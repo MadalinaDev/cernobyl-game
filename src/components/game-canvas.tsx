@@ -20,11 +20,16 @@ export default function GameCanvas() {
       x: 50,
       y: 300,
       inventory: {},
+      railgunAmmo: 0,
+      isInvincible: false,
+      damageMultiplier: 1,
     },
     roomName: "Pripyat Street",
     nearBench: false,
     gameOver: false,
     craftingMode: false,
+    itemCooldowns: {} as Record<string, number>,
+    selectedItem: 0,
   });
 
   // Initialize game engine
@@ -32,6 +37,21 @@ export default function GameCanvas() {
     if (!canvasRef.current) return;
 
     const engine = new GameEngine(canvasRef.current);
+    
+    // Set up the render callback
+    engine.onRender = (props) => {
+      setGameState(prev => ({
+        ...prev,
+        player: props.player,
+        roomName: props.roomName,
+        nearBench: props.nearBench,
+        itemCooldowns: props.itemCooldowns,
+        selectedItem: props.selectedItem,
+        craftingMode: engine.craftingMode,
+        gameOver: engine.gameOver,
+      }));
+    };
+
     setGameEngine(engine);
 
     // Load saved game if available
@@ -44,15 +64,6 @@ export default function GameCanvas() {
         engine.update();
       }
       engine.render();
-
-      // Update React state with game state
-      setGameState({
-        player: { ...engine.player },
-        roomName: engine.getCurrentRoom().name,
-        nearBench: engine.nearBench(),
-        gameOver: engine.gameOver,
-        craftingMode: engine.craftingMode,
-      });
 
       // Auto-save
       engine.saveGame();
@@ -89,8 +100,78 @@ export default function GameCanvas() {
     }
   };
 
+  const resetGame = () => {
+    if (gameEngine) {
+      gameEngine.resetGame();
+      setGameState({
+        player: {
+          hp: 100,
+          hpMax: 100,
+          keys: 0,
+          radRes: 0,
+          materials: { scrap: 0, circuits: 0, chemicals: 0 },
+          room: 0,
+          x: 50,
+          y: 300,
+          inventory: {},
+          railgunAmmo: 0,
+          isInvincible: false,
+          damageMultiplier: 1,
+        },
+        roomName: "Pripyat Street",
+        nearBench: false,
+        gameOver: false,
+        craftingMode: false,
+        itemCooldowns: {},
+        selectedItem: 0,
+      });
+    }
+  };
+
+  const changeDifficulty = (difficulty: 'peaceful' | 'easy' | 'normal' | 'hard') => {
+    if (gameEngine) {
+      gameEngine.setDifficulty(difficulty);
+    }
+  };
+
   return (
     <div className="relative">
+      {/* Difficulty Selector */}
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+        <button
+          onClick={() => changeDifficulty('peaceful')}
+          className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded shadow-md transition-colors"
+        >
+          Peaceful
+        </button>
+        <button
+          onClick={() => changeDifficulty('easy')}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded shadow-md transition-colors"
+        >
+          Easy
+        </button>
+        <button
+          onClick={() => changeDifficulty('normal')}
+          className="bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded shadow-md transition-colors"
+        >
+          Normal
+        </button>
+        <button
+          onClick={() => changeDifficulty('hard')}
+          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded shadow-md transition-colors"
+        >
+          Hard
+        </button>
+      </div>
+
+      {/* Reset Button */}
+      <button
+        onClick={resetGame}
+        className="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow-md transition-colors"
+      >
+        Reset Game
+      </button>
+
       {/* MiniMap */}
       {gameEngine && gameEngine.visitedRooms && (
         <MiniMap
@@ -115,6 +196,8 @@ export default function GameCanvas() {
         player={gameState.player}
         roomName={gameState.roomName}
         nearBench={gameState.nearBench}
+        itemCooldowns={gameState.itemCooldowns}
+        selectedItem={gameState.selectedItem}
       />
 
       {/* Crafting UI */}
@@ -128,8 +211,14 @@ export default function GameCanvas() {
 
       {/* Game Over Screen */}
       {gameState.gameOver && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/80">
-          <h2 className="text-5xl font-bold text-red-600">GAME OVER</h2>
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
+          <h2 className="text-5xl font-bold text-red-600 mb-4">GAME OVER</h2>
+          <button
+            onClick={resetGame}
+            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg shadow-md transition-colors text-xl font-bold"
+          >
+            Start New Game
+          </button>
         </div>
       )}
     </div>
